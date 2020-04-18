@@ -2,6 +2,7 @@ package com.stereo.endpoint_information.dao;
 
 import com.stereo.endpoint_information.exceptions.BadRequestException;
 import com.stereo.endpoint_information.exceptions.RecordAlreadyPresentException;
+import com.stereo.endpoint_information.exceptions.RecordNotFoundException;
 import com.stereo.endpoint_information.models.Endpoint;
 import com.stereo.endpoint_information.utilities.BaseUtils;
 import org.hibernate.Session;
@@ -65,7 +66,62 @@ public class EndpointDaoImpl implements EndpointDao {
     }
 
     @Override
-    public Endpoint delete(long endpoint_id) {
-        return null;
+    public Endpoint update(Endpoint endpoint) {
+        Session currentSession = entityManager.unwrap(Session.class);
+        Query query = null;
+        try {
+            query = currentSession.createSQLQuery(baseUtils.getValuesFromPropertyFile("isEndPointExists").replace("%endpointId%",
+                    endpoint.getEndpoint_id() + ""));
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        assert query != null;
+        List isEndpointPresent = query.getResultList();
+        if(isEndpointPresent.get(0).toString().equals("false")) {
+            throw new RecordNotFoundException("The endpoint with name: " + endpoint.getEndpoint_name() + " is not present");
+        }
+        Query update_query;
+        try {
+            if(endpoint.isIs_occupied()){
+                update_query = currentSession.createSQLQuery(baseUtils.getValuesFromPropertyFile("makeEndpointOccupied").replace("%occupiedBy%", endpoint.getOccupied_by())
+                .replace("%occupiedFor%", endpoint.getOccupied_for()).replace("%endpointId%", endpoint.getEndpoint_id() + ""));
+            } else {
+                update_query = currentSession.createSQLQuery(baseUtils.getValuesFromPropertyFile("makeEndpointUnOccupied").replace("%endpointId%", endpoint.getEndpoint_id() + ""));
+
+            }
+            assert update_query != null;
+            update_query.executeUpdate();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+    return endpoint;
+    }
+
+    @Override
+    public String delete(long  id) {
+        Session currentSession = entityManager.unwrap(Session.class);
+        Query query = null;
+        try {
+            query = currentSession.createSQLQuery(baseUtils.getValuesFromPropertyFile("isEndPointExists").replace("%endpointId%",
+                    id + ""));
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        assert query != null;
+        List isEndpointPresent = query.getResultList();
+        if(isEndpointPresent.get(0).toString().equals("false")) {
+            throw new RecordNotFoundException("The endpoint with id: " + id + " is not present");
+        }
+        try {
+
+           Query delete_query = currentSession.createSQLQuery(baseUtils.getValuesFromPropertyFile("deleteEndpoint").replace("%endpointId%",
+                   id + ""));
+           delete_query.executeUpdate();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return "endpoint with id: " + id + " is deleted successfully";
     }
 }

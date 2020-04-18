@@ -8,5 +8,6 @@ public interface EndpointService {
 
     List<Endpoint> getAllEndpoints();
     Endpoint addEndpoint(Endpoint endpoint);
-    Endpoint deleteEndpoint(long id);
+    Endpoint updateStatus(Endpoint endpoint);
+    String deleteEndpoint(long id);
 }

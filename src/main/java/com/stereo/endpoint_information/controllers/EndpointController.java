@@ -5,6 +5,7 @@ import com.stereo.endpoint_information.services.EndpointService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -24,6 +25,16 @@ public class EndpointController {
 
         return endpointService.addEndpoint(endpoint);
 
+    }
+
+    @PatchMapping("/endpoint")
+    public Endpoint updateStatus(@RequestBody Endpoint endpoint){
+       return endpointService.updateStatus(endpoint);
+    }
+
+    @DeleteMapping("/endpoint/{id}")
+    public String deleteEndpoint(@PathVariable long id){
+        return endpointService.deleteEndpoint(id);
     }
 
 

@@ -16,17 +16,26 @@ public class EndpointServiceImpl implements EndpointService {
 
 
     @Override
+    @Transactional
     public List<Endpoint> getAllEndpoints() {
         return endpoint_obj.get();
     }
 
     @Override
+    @Transactional
     public Endpoint addEndpoint(Endpoint endpoint) {
       return  endpoint_obj.save(endpoint);
     }
 
     @Override
-    public Endpoint deleteEndpoint(long id) {
-        return null;
+    @Transactional
+    public Endpoint updateStatus(Endpoint endpoint) {
+        return endpoint_obj.update(endpoint);
+    }
+
+    @Override
+    @Transactional
+    public String deleteEndpoint(long id) {
+        return endpoint_obj.delete(id);
     }
 }

@@ -8,5 +8,6 @@ public interface EndpointDao {
 
     List<Endpoint> get();
     Endpoint save(Endpoint endpoint);
-    Endpoint delete(long endpoint_id);
+    Endpoint update(Endpoint endpoint);
+    String delete(long id);
  }
