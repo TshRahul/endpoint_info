@@ -5,3 +5,5 @@ spring:
    url : jdbc:postgresql://localhost:5432/endpoint_info
    username : postgres
    password : 14ektcs016
+
+nativeQuery : true
