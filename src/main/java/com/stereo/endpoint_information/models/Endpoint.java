@@ -10,7 +10,7 @@ public class Endpoint {
     @Column(name = "endpoint_id")
     @PrimaryKeyJoinColumn
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long endpoint_id;
+    private long id;
 
     @Column(name = "endpoint_name")
     private String endpoint_name;
@@ -27,23 +27,31 @@ public class Endpoint {
     @Column(name = "is_deleted")
     private boolean is_deleted;
 
+    @Column(name = "environment")
+    private String environment;
+
+    @Column(name = "isbad")
+    private boolean isBad;
+
     public Endpoint() {}
 
-    public Endpoint(long endpoint_id, String endpoint_name, boolean is_occupied, String occupied_by, String occupied_for, boolean is_deleted) {
-        this.endpoint_id = endpoint_id;
+    public Endpoint(long endpoint_id, String endpoint_name, boolean is_occupied, String occupied_by, String occupied_for, boolean is_deleted, String environment, boolean isBad) {
+        this.id = endpoint_id;
         this.endpoint_name = endpoint_name;
         this.is_occupied = is_occupied;
         this.occupied_by = occupied_by;
         this.occupied_for = occupied_for;
         this.is_deleted = is_deleted;
+        this.environment = environment;
+        this.isBad = isBad;
     }
 
     public long getEndpoint_id() {
-        return endpoint_id;
+        return id;
     }
 
-    public void setEndpoint_id(long endpoint_id) {
-        this.endpoint_id = endpoint_id;
+    public void setEndpoint_id(long id) {
+        this.id = id;
     }
 
     public String getEndpoint_name() {
@@ -86,15 +94,33 @@ public class Endpoint {
         this.is_deleted = is_deleted;
     }
 
+    public String getEnvironment() {
+        return environment;
+    }
+
+    public void setEnvironment(String environment) {
+        this.environment = environment;
+    }
+
+    public boolean isBad() {
+        return isBad;
+    }
+
+    public void setBad(boolean bad) {
+        isBad = bad;
+    }
+
     @Override
     public String toString() {
         return "Endpoint{" +
-                "endpoint_id=" + endpoint_id +
+                "endpoint_id=" + id +
                 ", endpoint_name='" + endpoint_name + '\'' +
                 ", is_occupied=" + is_occupied +
                 ", occupied_by='" + occupied_by + '\'' +
                 ", occupied_for='" + occupied_for + '\'' +
                 ", is_deleted=" + is_deleted +
+                ", is_deleted=" + environment +
+                ", isBad=" + isBad +
                 '}';
     }
 }

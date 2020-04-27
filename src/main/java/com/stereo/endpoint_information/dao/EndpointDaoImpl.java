@@ -4,6 +4,7 @@ import com.stereo.endpoint_information.exceptions.BadRequestException;
 import com.stereo.endpoint_information.exceptions.RecordAlreadyPresentException;
 import com.stereo.endpoint_information.exceptions.RecordNotFoundException;
 import com.stereo.endpoint_information.models.Endpoint;
+import com.stereo.endpoint_information.repositories.EndpointRepo;
 import com.stereo.endpoint_information.utilities.BaseUtils;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -20,6 +21,9 @@ public class EndpointDaoImpl implements EndpointDao {
 
     @Autowired
     private EntityManager entityManager;
+
+    @Autowired
+    private EndpointRepo endpointRepo;
 
     private BaseUtils baseUtils = new BaseUtils();
 
@@ -59,6 +63,7 @@ public class EndpointDaoImpl implements EndpointDao {
         }
 
         endpoint.setIs_occupied(false);
+        endpoint.setEnvironment(endpoint.getEnvironment());
         endpoint.setIs_deleted(false);
         currentSession.saveOrUpdate(endpoint);
         currentSession.close();
@@ -84,7 +89,7 @@ public class EndpointDaoImpl implements EndpointDao {
         try {
             if(endpoint.isIs_occupied()){
                 update_query = currentSession.createSQLQuery(baseUtils.getValuesFromPropertyFile("makeEndpointOccupied").replace("%occupiedBy%", endpoint.getOccupied_by())
-                .replace("%occupiedFor%", endpoint.getOccupied_for()).replace("%endpointId%", endpoint.getEndpoint_id() + ""));
+                .replace("%occupiedFor%", endpoint.getOccupied_for()).replace("%endpointId%", endpoint.getEndpoint_id() + "").replace("%environment%", endpoint.getEnvironment()));
             } else {
                 update_query = currentSession.createSQLQuery(baseUtils.getValuesFromPropertyFile("makeEndpointUnOccupied").replace("%endpointId%", endpoint.getEndpoint_id() + ""));
 
@@ -124,4 +129,58 @@ public class EndpointDaoImpl implements EndpointDao {
 
         return "endpoint with id: " + id + " is deleted successfully";
     }
+
+    @Override
+    public Endpoint updateEnvironment(long id, String environment) {
+        Session currentSession = entityManager.unwrap(Session.class);
+        Query query = null;
+        try {
+            query = currentSession.createSQLQuery(baseUtils.getValuesFromPropertyFile("isEndPointExists").replace("%endpointId%",
+                    id + ""));
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        assert query != null;
+        List isEndpointPresent = query.getResultList();
+        if(isEndpointPresent.get(0).toString().equals("false")) {
+            throw new RecordNotFoundException("The endpoint with id: " + id + " is not present");
+        }
+
+        try {
+            Query update_query = currentSession.createSQLQuery(baseUtils.getValuesFromPropertyFile("updateEnvironmentOfEndpoint").replace("%environment%", environment).replace("%endpointId%",
+                    id + ""));
+            update_query.executeUpdate();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return endpointRepo.findById(id);
+    }
+
+    @Override
+    public Endpoint isBad(long id, String isBad) {
+        Session currentSession = entityManager.unwrap(Session.class);
+        Query query = null;
+        try {
+            query = currentSession.createSQLQuery(baseUtils.getValuesFromPropertyFile("isEndPointExists").replace("%endpointId%",
+                    id + ""));
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        assert query != null;
+        List isEndpointPresent = query.getResultList();
+        if(isEndpointPresent.get(0).toString().equals("false")) {
+            throw new RecordNotFoundException("The endpoint with id: " + id + " is not present");
+        }
+
+        try {
+            Query update_query = currentSession.createSQLQuery(baseUtils.getValuesFromPropertyFile("updateIsBad").replace("%isBad%", isBad).replace("%endpointId%",
+                    id + ""));
+            update_query.executeUpdate();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        return endpointRepo.findById(id);
+    }
+
 }

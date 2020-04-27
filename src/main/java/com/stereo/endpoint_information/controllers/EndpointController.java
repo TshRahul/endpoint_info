@@ -32,6 +32,16 @@ public class EndpointController {
        return endpointService.updateStatus(endpoint);
     }
 
+    @PatchMapping("/endpoint/updateEnvironment/{id}")
+    public Endpoint updateEnvironment(@PathVariable long id, @RequestBody String env){
+        return endpointService.updateEnvironment(id, env);
+    }
+
+    @PatchMapping("/endpoint/isBad/{id}")
+    public Endpoint isBad(@PathVariable long id, @RequestBody String isBad){
+        return endpointService.isBad(id, isBad);
+    }
+
     @DeleteMapping("/endpoint/{id}")
     public String deleteEndpoint(@PathVariable long id){
         return endpointService.deleteEndpoint(id);

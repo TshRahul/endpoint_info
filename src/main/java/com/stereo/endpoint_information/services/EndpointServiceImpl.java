@@ -35,7 +35,19 @@ public class EndpointServiceImpl implements EndpointService {
 
     @Override
     @Transactional
+    public Endpoint updateEnvironment(long id, String environment) {
+        return endpoint_obj.updateEnvironment(id,  environment);
+    }
+
+    @Override
+    @Transactional
     public String deleteEndpoint(long id) {
         return endpoint_obj.delete(id);
+    }
+
+    @Override
+    @Transactional
+    public Endpoint isBad(long id, String isBad) {
+       return endpoint_obj.isBad(id, isBad);
     }
 }
