@@ -43,4 +43,12 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     }
 
+    @ExceptionHandler(IncorrectCredentialException.class)
+    public final ResponseEntity<ErrorResponse> handleWrongCredentialsException(IncorrectCredentialException ex, WebRequest request){
+        List<String> details = new ArrayList<>();
+        details.add(ex.getLocalizedMessage());
+        ErrorResponse error = new ErrorResponse("Credentials does not matched", details);
+        return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
+    }
+
 }
