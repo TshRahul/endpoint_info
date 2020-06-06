@@ -52,72 +52,89 @@ public class User {
     public String getUsername() {
         return username;
     }
+
     public void setUsername(String username) {
         this.username = username;
     }
+
     public String getFirstname() {
         return firstname;
     }
+
     public void setFirstname(String firstname) {
         this.firstname = firstname;
     }
+
     public String getLastname() {
         return lastname;
     }
+
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
 
     @JsonIgnore
     @JsonProperty(value = "password")
-
     public String getPassword() {
         return password;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
-    String getRoles() {
-        return roles;
-    }
-    public void setRoles(String roles) {
-        this.roles = roles;
-    }
-    public Date getCreation_date() {
-        return creation_date;
-    }
-    public void setCreation_date(Date creation_date) {
-        this.creation_date = creation_date;
-    }
-    boolean isActive() {
-        return active;
-    }
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-
 
     public String getEmail() {
         return email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
 
+    public String getRoles() {
+        return roles;
+    }
 
+    public void setRoles(String roles) {
+        this.roles = roles;
+    }
+
+    public Date getCreation_date() {
+        return creation_date;
+    }
+
+    public void setCreation_date(Date creation_date) {
+        this.creation_date = creation_date;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
     public String getProfileImage() {
         return profileImage;
     }
+
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }
+
     @Override
     public String toString() {
-        return "User [ username=" + username + ", Firstname=" + firstname + ", Lastname="
-                + lastname + ", password=" + password + ", roles=" + roles + ", creation_date=" + creation_date
-                + ", active=" + active + "]" +  ", profileImage="
-                + profileImage + "]";
+        return "User{" +
+                "username='" + username + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", roles='" + roles + '\'' +
+                ", creation_date=" + creation_date +
+                ", active=" + active +
+                ", profileImage='" + profileImage + '\'' +
+                '}';
     }
 }

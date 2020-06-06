@@ -50,7 +50,7 @@ public class LoginController {
                     authenticationRequest.getUsername(), generatedSecuredPasswordHash));
         } catch (BadCredentialsException e) {
 
-            throw new IncorrectCredentialException("The user credintials are wrong");
+            throw new IncorrectCredentialException("The user credentials are wrong");
         }
 
         final UserDetails userDetails = userDetailService.loadUserByUsername(authenticationRequest.getUsername());

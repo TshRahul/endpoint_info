@@ -1,4 +1,4 @@
-package com.stereo.endpoint_infoemation;
+package com.stereo.endpoint_information;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

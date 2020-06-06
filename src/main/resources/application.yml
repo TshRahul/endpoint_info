@@ -1,9 +1,15 @@
 server:
   port : 9091
+  ssl:
+   enabled: true
+   key-alias : https-endpoint-info
+   key-store-type : JKS
+   key-password : 14ektcs016
+   key-store : classpath:https-endpoint-info.jks
 spring:
   datasource:
-   url : jdbc:postgresql://localhost:5432/endpoint_info
+   url : jdbc:postgresql://192.168.99.100:5555/endpoint_info
    username : postgres
-   password : 14ektcs016
+   password : password
 
 nativeQuery : true
